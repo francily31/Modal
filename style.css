@@ -8,7 +8,8 @@
 :root{
     /*cor da tabela de cima*/
     /*--primary-color: #FFBA00;*/
-    --secundary-color: #FFF1CC;
+    /*--secundary-color: #FFF1CC;*/
+    --secundary-color: #F08080;
     /*cor do nome central*/
    /* --shadow-color: #CCC;*/
     --text-color: #FFF;
@@ -225,8 +226,10 @@ button.red{
 }
 
 /*estilização das barras com nomes*/
-.records{
+.records{ 
+    /*cor do cabeçalho*/
     width: 100%;
+    background-color: #FA8072;
     user-select: none;
     text-align: left;
 }
