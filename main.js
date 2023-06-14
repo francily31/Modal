@@ -9,28 +9,30 @@ const closeModal = () => {
 }
 
 
-const getLocalStorage = () => JSON.parse(localStorage.getItem('db_client')) ?? []
-const setLocalStorage = (dbClient) => localStorage.setItem("db_client", JSON.stringify(dbClient))
+const getLocalStorage = () => JSON.parse(localStorage.getItem('db_aluno')) ?? []
+const setLocalStorage = (dbAluno) => localStorage.setItem("db_aluno", JSON.stringify(dbAluno))
+
+//botao input com number
 
 // CRUD - create read update delete
-const deleteClient = (index) => {
-    const dbClient = readClient()
-    dbClient.splice(index, 1)
-    setLocalStorage(dbClient)
+const deleteAluno = (index) => {
+    const dbAluno = readAluno()
+    dbAluno.splice(index, 1)
+    setLocalStorage(dbAluno)
 }
 
-const updateClient = (index, client) => {
-    const dbClient = readClient()
-    dbClient[index] = client
-    setLocalStorage(dbClient)
+const updateAluno = (index, aluno) => {
+    const dbAluno = readAluno()
+    dbAluno[index] = aluno
+    setLocalStorage(dbAluno)
 }
 
-const readClient = () => getLocalStorage()
+const readAluno = () => getLocalStorage()
 
-const createClient = (client) => {
-    const dbClient = getLocalStorage()
-    dbClient.push (client)
-    setLocalStorage(dbClient)
+const createAluno = (aluno) => {
+    const dbAluno = getLocalStorage()
+    dbAluno.push (aluno)
+    setLocalStorage(dbAluno)
 }
 
 const isValidFields = () => {
@@ -46,9 +48,9 @@ const clearFields = () => {
     document.querySelector(".modal-header>h2").textContent  = 'Novo Aluno'
 }
 
-const saveClient = () => {
+const saveAluno = () => {
     if (isValidFields()) {
-        const client = {
+        const aluno = {
             ra: document.getElementById('ra').value,
             nome: document.getElementById('nome').value,
             curso: document.getElementById('curso').value,
@@ -56,56 +58,56 @@ const saveClient = () => {
         }
         const index = document.getElementById('nome').dataset.index
         if (index == 'new') {
-            createClient(client)
+            createAluno(aluno)
             updateTable()
             closeModal()
         } else {
-            updateClient(index, client)
+            updateAluno(index, aluno)
             updateTable()
             closeModal()
         }
     }
 }
 
-const createRow = (client, index) => {
+const createRow = (aluno, index) => {
     const newRow = document.createElement('tr')
     newRow.innerHTML = `
-        <td>${client.ra}</td>
-        <td>${client.nome}</td>
-        <td>${client.curso}</td>
-        <td>${client.periodo}</td>
+        <td>${aluno.ra}</td>
+        <td>${aluno.nome}</td>
+        <td>${aluno.curso}</td>
+        <td>${aluno.periodo}</td>
         <td>
             <button type="button" class="button green" id="edit-${index}">Editar</button>
             <button type="button" class="button red" id="delete-${index}" >Excluir</button>
         </td>
     `
-    document.querySelector('#tableClient>tbody').appendChild(newRow)
+    document.querySelector('#tableAluno>tbody').appendChild(newRow)
 }
 
 const clearTable = () => {
-    const rows = document.querySelectorAll('#tableClient>tbody tr')
+    const rows = document.querySelectorAll('#tableAluno>tbody tr')
     rows.forEach(row => row.parentNode.removeChild(row))
 }
 
 const updateTable = () => {
-    const dbClient = readClient()
+    const dbAluno = readAluno()
     clearTable()
-    dbClient.forEach(createRow)
+    dbAluno.forEach(createRow)
 }
 
-const fillFields = (client) => {
-    document.getElementById('ra').value = client.nome
-    document.getElementById('nome').value = client.email
-    document.getElementById('curso').value = client.celular
-    document.getElementById('periodo').value = client.cidade
-    document.getElementById('nome').dataset.index = client.index
+const fillFields = (aluno) => {
+    document.getElementById('ra').value = aluno.ra
+    document.getElementById('nome').value = aluno.nome
+    document.getElementById('curso').value = aluno.curso
+    document.getElementById('periodo').value = aluno.periodo
+    document.getElementById('nome').dataset.index = aluno.index
 }
 
-const editClient = (index) => {
-    const client = readClient()[index]
-    client.index = index
-    fillFields(client)
-    document.querySelector(".modal-header>h2").textContent  = `Editando ${client.nome}`
+const editAluno = (index) => {
+    const aluno = readAluno()[index]
+    aluno.index = index
+    fillFields(aluno)
+    document.querySelector(".modal-header>h2").textContent  = `Editando ${aluno.nome}`
     openModal()
 }
 
@@ -115,12 +117,12 @@ const editDelete = (event) => {
         const [action, index] = event.target.id.split('-')
 
         if (action == 'edit') {
-            editClient(index)
+            editAluno(index)
         } else {
-            const client = readClient()[index]
-            const response = confirm(`Deseja realmente excluir o aluno ${client.nome}`)
+            const aluno = readAluno()[index]
+            const response = confirm(`Deseja realmente excluir o aluno ${aluno.nome}`)
             if (response) {
-                deleteClient(index)
+                deleteAluno(index)
                 updateTable()
             }
         }
@@ -130,16 +132,16 @@ const editDelete = (event) => {
 updateTable()
 
 // Eventos
-document.getElementById('cadastrarCliente')
+document.getElementById('cadastrarAluno')
     .addEventListener('click', openModal)
 
 document.getElementById('modalClose')
     .addEventListener('click', closeModal)
 
 document.getElementById('salvar')
-    .addEventListener('click', saveClient)
+    .addEventListener('click', saveAluno)
 
-document.querySelector('#tableClient>tbody')
+document.querySelector('#tableAluno>tbody')
     .addEventListener('click', editDelete)
 
 document.getElementById('cancelar')
